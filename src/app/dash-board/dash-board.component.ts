@@ -1,0 +1,11 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-dash-board',
+  imports: [],
+  templateUrl: './dash-board.component.html',
+  styles: ``
+})
+export class DashBoardComponent {
+
+}
