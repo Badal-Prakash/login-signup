@@ -64,7 +64,7 @@ export class RegisterationComponent implements OnInit {
   }
   ngOnInit(): void {
     if (this.service.isLoggedIn()) {
-      this.router.navigateByUrl('/dashboard');
+      // this.router.navigateByUrl('/dashboard');
     }
   }
   onSubmit() {

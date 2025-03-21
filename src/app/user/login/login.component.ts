@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
   }
   ngOnInit(): void {
     if (this.service.isLoggedIn()) {
-      this.router.navigateByUrl('/dashboard');
+      // this.router.navigateByUrl('/dashboard');
     }
   }
   hasDisplayableError(controlName: string): boolean {
@@ -47,12 +47,12 @@ export class LoginComponent implements OnInit {
     this.isSubmitted = true;
     console.log(this.form.value);
     if (this.form.valid) {
-      this.service.loginUser(this.form.value).subscribe({
+      this.service.signin(this.form.value).subscribe({
         next: (res: any) => {
           this.service.saveToken(res.token);
           this.router.navigateByUrl('/dashboard');
         },
-        error: (err) => {
+        error: (err: any) => {
           if (err.status == 400) {
             this.tostr.error('Incorrect Email or Password', 'Login Failed');
           } else {
