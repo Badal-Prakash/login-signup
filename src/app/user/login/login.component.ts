@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -17,7 +17,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './login.component.html',
   styles: ``,
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   form: FormGroup;
   isSubmitted: boolean = false;
   constructor(
@@ -30,6 +30,11 @@ export class LoginComponent {
       Email: ['', Validators.required],
       Password: ['', Validators.required],
     });
+  }
+  ngOnInit(): void {
+    if (this.service.isLoggedIn()) {
+      this.router.navigateByUrl('/dashboard');
+    }
   }
   hasDisplayableError(controlName: string): boolean {
     const control = this.form.get(controlName);
@@ -44,7 +49,7 @@ export class LoginComponent {
     if (this.form.valid) {
       this.service.loginUser(this.form.value).subscribe({
         next: (res: any) => {
-          localStorage.setItem('token', res.token);
+          this.service.saveToken(res.token);
           this.router.navigateByUrl('/dashboard');
         },
         error: (err) => {
