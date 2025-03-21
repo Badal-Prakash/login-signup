@@ -6,7 +6,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../shared/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,12 @@ import { RouterLink } from '@angular/router';
 export class LoginComponent {
   form: FormGroup;
   isSubmitted: boolean = false;
-  constructor(public formBuilder: FormBuilder) {
+  constructor(
+    public formBuilder: FormBuilder,
+    private service: AuthService,
+    private router: Router,
+    private tostr: ToastrService
+  ) {
     this.form = this.formBuilder.group({
       Email: ['', Validators.required],
       Password: ['', Validators.required],
@@ -34,5 +41,20 @@ export class LoginComponent {
   onSubmit() {
     this.isSubmitted = true;
     console.log(this.form.value);
+    if (this.form.valid) {
+      this.service.loginUser(this.form.value).subscribe({
+        next: (res: any) => {
+          localStorage.setItem('token', res.token);
+          this.router.navigateByUrl('/dashboard');
+        },
+        error: (err) => {
+          if (err.status == 400) {
+            this.tostr.error('Incorrect Email or Password', 'Login Failed');
+          } else {
+            console.log('error during login\n', err);
+          }
+        },
+      });
+    }
   }
 }
