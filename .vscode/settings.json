@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/bee5c9ad-36ce-49ec-b7fa-36e5783af25d/resourceGroups/appsvc_windows_centralus/providers/Microsoft.Web/sites/AuthAngular",
+    "appService.deploySubpath": "."
+}
